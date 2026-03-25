@@ -1,0 +1,146 @@
+---
+// CardPasosPresupuesto.astro
+// Renders step-by-step entrepreneurship plan with budget
+---
+
+<section 
+  class="bg-bg-base border border-border-default rounded-xl p-8 min-h-[280px] transition-colors duration-300 ease-out has-[.content-state:not(.hidden)]:border-border-emphasis" 
+  id="card-pasos-presupuesto" 
+  aria-live="polite" 
+  aria-label="Pasos y Presupuesto"
+>
+  <!-- Skeleton -->
+  <div class="skeleton-state flex flex-col items-center justify-center py-sp-12 text-center" id="skeleton-pasos">
+    <div class="w-12 h-12 border-4 border-amber/20 border-t-amber rounded-full animate-spin mb-sp-4"></div>
+    <p class="font-display text-xl text-text-primary animate-pulse">Calculando presupuesto y pasos...</p>
+    <p class="text-sm text-text-tertiary mt-2">Diseñando tu hoja de ruta personalizada</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-state hidden flex flex-col items-center justify-center gap-sp-2 min-h-[200px] text-center bg-error-bg border border-[hsl(0,50%,30%)] rounded-lg p-8" id="error-pasos">
+    <div class="text-[28px]">⚠</div>
+    <p class="font-semibold text-[hsl(0,70%,65%)]">Error al generar el plan</p>
+    <p class="text-[0.875rem] text-text-secondary" id="error-pasos-msg"></p>
+  </div>
+
+  <!-- Content -->
+  <div class="content-state hidden" id="content-pasos">
+    <header class="card-header">
+      <span class="card-tag">03</span>
+      <h2 class="card-title">Plan · Presupuesto</h2>
+      <p class="card-subtitle" id="pasos-modelo"></p>
+    </header>
+
+    <!-- Total budget badge -->
+    <div class="flex items-center justify-between bg-amber-subtle border border-amber-glow rounded-md px-sp-5 py-sp-4 mb-sp-6 max-[700px]:flex-col max-[700px]:gap-sp-2 max-[700px]:text-center">
+      <span class="text-[0.75rem] font-semibold tracking-widest uppercase text-text-tertiary">Presupuesto Total Estimado</span>
+      <span class="font-mono text-clamp-[1rem,2.5vw,1.3rem] font-medium text-amber tracking-tight" id="pasos-total"></span>
+    </div>
+
+    <!-- Steps timeline -->
+    <ol class="list-none relative pl-0 before:content-[''] before:absolute before:left-[8px] before:top-0 before:bottom-0 before:w-[1px] before:bg-linear-to-b before:from-amber before:to-border-subtle before:opacity-30" id="pasos-lista"></ol>
+  </div>
+</section>
+
+<style is:global>
+  .paso-item {
+    position: relative;
+    margin-bottom: var(--spacing-sp-12);
+    padding-left: var(--spacing-sp-10);
+    transition: transform 0.2s;
+  }
+  .paso-header-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-sp-4);
+    gap: var(--spacing-sp-1);
+  }
+  .paso-number {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-amber);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .paso-nombre {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-top: var(--spacing-sp-1);
+  }
+  .paso-divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-amber) 0%, transparent 80%);
+    margin-bottom: var(--spacing-sp-6);
+    opacity: 0.8;
+  }
+  .paso-phase {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border-default);
+    padding: 2px 8px;
+    border-radius: 2px;
+    width: fit-content;
+  }
+  .paso-data-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sp-4);
+  }
+  .data-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--spacing-sp-4);
+    align-items: baseline;
+  }
+  .data-key {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.05em;
+    border-right: 1px solid var(--color-border-subtle);
+    padding-right: var(--spacing-sp-3);
+  }
+  .data-value {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .data-row.highlight .data-value {
+    color: var(--color-amber);
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+  .paso-spacer {
+    height: var(--spacing-sp-12);
+    border-bottom: 1px dashed var(--color-border-subtle);
+    margin-top: var(--spacing-sp-4);
+    margin-bottom: var(--spacing-sp-8);
+  }
+  .hidden { display: none !important; }
+
+  @media (max-width: 700px) {
+    .data-row {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-sp-1);
+    }
+    .data-key {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding-bottom: 2px;
+      margin-bottom: 4px;
+    }
+    .paso-nombre { font-size: 1.2rem; }
+  }
+</style>

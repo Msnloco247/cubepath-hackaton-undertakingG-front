@@ -1,0 +1,39 @@
+---
+import CardFodaZona from "../CardFodaZona.astro";
+import CardProductoEstrategia from "../CardProductoEstrategia.astro";
+import CardPasosPresupuesto from "../CardPasosPresupuesto.astro";
+---
+
+<section
+  id="results-section"
+  class="hidden mt-sp-4 animate-[fadeUp_0.5s_ease-out_both]"
+  aria-live="polite"
+>
+  <div
+    class="flex flex-col sm:flex-row sm:items-center justify-between gap-sp-4 mb-sp-10"
+  >
+    <div>
+      <h2
+        class="font-display text-[clamp(2.2rem,5vw,3rem)] font-normal mb-sp-1 text-text-primary"
+      >
+        Tu diagnóstico
+      </h2>
+      <p
+        class="font-mono text-[0.8rem] text-text-tertiary tracking-widest uppercase"
+      >
+        Estrategia generada con IA
+      </p>
+    </div>
+    <button
+      id="back-to-form"
+      class="flex items-center gap-2 px-sp-5 py-sp-3 bg-white border border-border-default rounded-xl text-text-secondary font-bold text-sm hover:border-amber hover:text-amber transition-all shadow-sm"
+    >
+      <span>←</span> Volver a analizar
+    </button>
+  </div>
+  <div class="flex flex-col gap-sp-10">
+    <CardFodaZona />
+    <CardProductoEstrategia />
+    <CardPasosPresupuesto />
+  </div>
+</section>

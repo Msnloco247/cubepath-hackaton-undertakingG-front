@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'EmprendeIA — Analiza tu Emprendimiento con IA',
+  description = 'Responde algunas preguntas y recibe un análisis FODA, propuesta de valor y plan de pasos con presupuesto para tu emprendimiento.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="selection:bg-amber/30 selection:text-amber">
+    <slot />
+  </body>
+</html>

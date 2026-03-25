@@ -1,0 +1,111 @@
+---
+// CardFodaZona.astro
+// Renders the FODA matrix + geographical zone analysis
+---
+
+<section 
+  class="bg-bg-base border border-border-default rounded-xl p-8 min-h-[280px] transition-colors duration-300 ease-out has-[.content-state:not(.hidden)]:border-border-emphasis" 
+  id="card-foda-zona" 
+  aria-live="polite" 
+  aria-label="Análisis FODA y Zona"
+>
+  <!-- Skeleton state (shown while loading) -->
+  <div class="skeleton-state flex flex-col items-center justify-center py-sp-12 text-center" id="skeleton-foda">
+    <div class="w-12 h-12 border-4 border-amber/20 border-t-amber rounded-full animate-spin mb-sp-4"></div>
+    <p class="font-display text-xl text-text-primary animate-pulse">Generando análisis FODA...</p>
+    <p class="text-sm text-text-tertiary mt-2">Nuestra IA está evaluando tu mercado y zona</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-state hidden flex flex-col items-center justify-center gap-sp-2 min-h-[200px] text-center bg-error-bg rounded-lg border border-[hsl(0,50%,30%)] p-8" id="error-foda">
+    <div class="text-[28px]">⚠</div>
+    <p class="font-body font-semibold text-[hsl(0,70%,65%)]">Error al analizar FODA</p>
+    <p class="text-[0.875rem] text-text-secondary" id="error-foda-msg"></p>
+  </div>
+
+  <!-- Content state (hidden until data arrives) -->
+  <div class="content-state hidden" id="content-foda">
+    <header class="card-header">
+      <span class="card-tag">01</span>
+      <h2 class="card-title">FODA · Zona Geográfica</h2>
+      <p class="card-subtitle" id="foda-modelo"></p>
+    </header>
+
+    <!-- FODA 2×2 matrix -->
+    <div class="grid grid-cols-2 gap-sp-3 mb-sp-6 max-[600px]:grid-cols-1">
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
+          <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-success"></span>Fortalezas
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-4" id="foda-fortalezas"></ul>
+      </div>
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
+          <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-[hsl(200,70%,52%)]"></span>Oportunidades
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-4" id="foda-oportunidades"></ul>
+      </div>
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
+          <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-warning"></span>Debilidades
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-4" id="foda-debilidades"></ul>
+      </div>
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
+          <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-error"></span>Amenazas
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-4" id="foda-amenazas"></ul>
+      </div>
+    </div>
+
+    <!-- Zone analysis -->
+    <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-5">
+      <h3 class="font-body text-[0.78rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-3">Análisis de Zona</h3>
+      <p class="text-[0.9rem] text-text-secondary mb-sp-4 leading-relaxed" id="zona-descripcion"></p>
+      <div class="grid grid-cols-2 gap-sp-4 mb-sp-4 max-[600px]:grid-cols-1">
+        <div class="zona-col">
+          <h4 class="text-[0.72rem] font-semibold tracking-widest uppercase mb-sp-2 text-success">Ventajas</h4>
+          <ul class="list-none flex flex-col gap-sp-1" id="zona-ventajas"></ul>
+        </div>
+        <div class="zona-col">
+          <h4 class="text-[0.72rem] font-semibold tracking-widest uppercase mb-sp-2 text-error">Desventajas</h4>
+          <ul class="list-none flex flex-col gap-sp-1" id="zona-desventajas"></ul>
+        </div>
+      </div>
+      <div class="bg-amber-subtle border border-amber-glow rounded-sm px-sp-4 py-sp-3">
+        <span class="block font-mono text-[0.68rem] tracking-widest text-amber mb-sp-1">Recomendación</span>
+        <p class="text-[0.88rem] text-text-secondary leading-relaxed" id="zona-recomendacion"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  #foda-fortalezas li, #foda-oportunidades li, #foda-debilidades li, #foda-amenazas li {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    padding-left: var(--spacing-sp-3);
+    border-left: 2px solid var(--color-border-subtle);
+    padding-bottom: var(--spacing-sp-2);
+    border-bottom: 1px dotted var(--color-border-subtle);
+    line-height: 1.5;
+  }
+  #foda-fortalezas li:last-child, #foda-oportunidades li:last-child, #foda-debilidades li:last-child, #foda-amenazas li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .foda-keyword {
+    display: inline;
+    font-weight: 700;
+    color: var(--color-amber);
+  }
+  .zona-list li {
+    font-size: 0.83rem;
+    color: var(--color-text-secondary);
+    padding-left: var(--spacing-sp-3);
+    border-left: 1px solid var(--color-border-default);
+    line-height: 1.4;
+  }
+  .hidden { display: none !important; }
+</style>

@@ -1,0 +1,153 @@
+---
+// CardProductoEstrategia.astro
+// Renders product analysis + short/medium/long-term strategies
+---
+
+<section
+  class="bg-bg-base border border-border-default rounded-xl p-8 min-h-[280px] transition-colors duration-300 ease-out has-[.content-state:not(.hidden)]:border-border-emphasis"
+  id="card-producto-estrategia"
+  aria-live="polite"
+  aria-label="Análisis de Producto y Estrategias"
+>
+  <!-- Skeleton -->
+  <div class="skeleton-state flex flex-col items-center justify-center py-sp-12 text-center" id="skeleton-producto">
+    <div class="w-12 h-12 border-4 border-amber/20 border-t-amber rounded-full animate-spin mb-sp-4"></div>
+    <p class="font-display text-xl text-text-primary animate-pulse">Definiendo tu estrategia...</p>
+    <p class="text-sm text-text-tertiary mt-2">Optimizando tu propuesta de valor y diferenciadores</p>
+  </div>
+
+  <!-- Error -->
+  <div
+    class="error-state hidden flex flex-col items-center justify-center gap-sp-2 min-h-[200px] text-center bg-error-bg border border-[hsl(0,50%,30%)] rounded-lg p-8"
+    id="error-producto"
+  >
+    <div class="text-[28px]">⚠</div>
+    <p class="font-semibold text-[hsl(0,70%,65%)]">
+      Error al analizar el producto
+    </p>
+    <p class="text-[0.875rem] text-text-secondary" id="error-producto-msg"></p>
+  </div>
+
+  <!-- Content -->
+  <div class="content-state hidden" id="content-producto">
+    <header class="card-header">
+      <span class="card-tag">02</span>
+      <h2 class="card-title">Producto · Estrategia</h2>
+      <p class="card-subtitle" id="producto-modelo"></p>
+    </header>
+
+    <!-- Product card -->
+    <div
+      class="bg-bg-raised border border-border-subtle rounded-md p-sp-5 mb-sp-6"
+    >
+      <p
+        class="font-mono text-[0.68rem] tracking-widest uppercase text-amber mb-sp-2"
+      >
+        Propuesta de Valor
+      </p>
+      <p
+        class="font-display italic text-clamp-[1rem,2.5vw,1.2rem] text-text-primary leading-tight mb-sp-4 pb-sp-4 border-b border-border-subtle"
+        id="producto-propuesta"
+      >
+      </p>
+
+      <div class="grid grid-cols-2 gap-sp-4 mb-sp-4 max-[700px]:grid-cols-1">
+        <div class="meta-item">
+          <span
+            class="block text-[0.7rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-1"
+            >Descripción</span
+          >
+          <p
+            class="text-[0.88rem] text-text-secondary leading-relaxed"
+            id="producto-descripcion"
+          >
+          </p>
+        </div>
+        <div class="meta-item">
+          <span
+            class="block text-[0.7rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-1"
+            >Público Objetivo</span
+          >
+          <p
+            class="text-[0.88rem] text-text-secondary leading-relaxed"
+            id="producto-publico"
+          >
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-sp-2">
+        <span
+          class="block text-[0.7rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-1"
+          >Diferenciadores clave</span
+        >
+        <ul
+          class="list-none flex flex-wrap gap-sp-2 mt-sp-2 text-amber"
+          id="producto-diferenciadores"
+        >
+        </ul>
+      </div>
+    </div>
+
+    <!-- Strategies 3-column -->
+    <div class="grid grid-cols-3 gap-sp-3 max-[700px]:grid-cols-1">
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3
+          class="flex items-center gap-sp-2 font-body text-[0.75rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-3"
+        >
+          <span class="font-mono text-[0.65rem] text-amber tracking-[-2px]"
+            >▸</span
+          >Corto plazo
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-2" id="estrategia-corto"></ul>
+      </div>
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3
+          class="flex items-center gap-sp-2 font-body text-[0.75rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-3"
+        >
+          <span class="font-mono text-[0.65rem] text-amber tracking-[-2px]"
+            >▸▸</span
+          >Mediano plazo
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-2" id="estrategia-mediano">
+        </ul>
+      </div>
+      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+        <h3
+          class="flex items-center gap-sp-2 font-body text-[0.75rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-3"
+        >
+          <span class="font-mono text-[0.65rem] text-amber tracking-[-2px]"
+            >▸▸▸</span
+          >Largo plazo
+        </h3>
+        <ul class="list-none flex flex-col gap-sp-2" id="estrategia-largo"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  #producto-diferenciadores li {
+    background: var(--color-amber-subtle);
+    border: 1px solid var(--color-amber-glow);
+    border-radius: var(--radius-sm);
+    padding: 3px var(--spacing-sp-3);
+    font-size: 0.78rem;
+    color: hsl(30 80% 35%);
+    font-family: var(--font-mono);
+  }
+  .estrategia-list li {
+    font-size: 0.83rem;
+    color: var(--color-text-secondary);
+    padding-left: var(--spacing-sp-3);
+    border-left: 2px solid var(--color-border-default);
+    line-height: 1.45;
+    transition: border-color 0.2s;
+  }
+  .estrategia-list li:hover {
+    border-left-color: var(--color-amber-dim);
+  }
+  .hidden {
+    display: none !important;
+  }
+</style>

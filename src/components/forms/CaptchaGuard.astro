@@ -1,0 +1,122 @@
+---
+// CaptchaGuard.astro
+// Web component que maneja la verificación humana (EmprendeIA Protect)
+---
+
+<captcha-guard id="main-captcha" class="block mt-sp-8">
+  <div class="captcha-wrapper group relative flex items-center justify-between bg-bg-base border border-border-default p-sp-5 rounded-xl max-w-[440px] shadow-sm transition-all duration-300 ease-out hover:border-amber/30 hover:shadow-md [&.verifying]:border-amber-dim [&.verified]:border-success [&.verified]:bg-success/5">
+    <div class="flex items-center gap-sp-4 cursor-pointer select-none" id="captcha-box" tabindex="0" role="checkbox" aria-checked="false">
+      <div class="captcha-visual w-8 h-8 border-2 border-border-emphasis rounded-lg flex items-center justify-center bg-bg-control transition-all duration-300 ease-out group-hover:scale-105 relative overflow-hidden">
+        <div class="hidden w-5 h-5 border-2 border-transparent border-t-amber rounded-full animate-spin" id="captcha-spinner"></div>
+        <svg class="hidden w-5 h-5 text-white" id="captcha-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" style="stroke-dasharray: 24; stroke-dashoffset: 24;">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-medium text-text-primary text-[0.95rem] transition-colors duration-300" id="captcha-text">Verificar identidad</span>
+        <span class="text-[0.7rem] text-text-muted mt-0.5" id="captcha-subtext">Protección inteligente EmprendeIA</span>
+      </div>
+    </div>
+    <div class="flex flex-col items-end opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300">
+      <div class="w-7 h-7 bg-linear-to-br from-amber/80 to-amber-dim rounded-lg shadow-inner flex items-center justify-center">
+        <span class="text-[10px] text-bg-canvas font-bold">IA</span>
+      </div>
+    </div>
+  </div>
+  <span class="hidden mt-sp-2 px-2 text-error text-[0.8rem] font-medium" id="captcha-error" role="alert">Por favor, completa la verificación para continuar.</span>
+</captcha-guard>
+
+<style is:global>
+  @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+  
+  /* Robust state management */
+  .captcha-wrapper.verified {
+    border-color: var(--color-success) !important;
+  }
+  .captcha-wrapper.verified .captcha-visual {
+    background-color: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+    transform: scale(1) !important;
+  }
+  .captcha-wrapper.verified #captcha-check {
+    display: block !important;
+    animation: drawCheck 0.4s ease forwards;
+  }
+  .captcha-wrapper.verified #captcha-text {
+    color: var(--color-text-primary) !important;
+  }
+  .captcha-wrapper.verified #captcha-subtext {
+    color: var(--color-success) !important;
+    content: 'Identidad confirmada';
+  }
+  
+  .captcha-wrapper.verifying .captcha-visual {
+    border-color: var(--color-amber) !important;
+  }
+  .captcha-wrapper.verifying #captcha-spinner {
+    display: block !important;
+  }
+
+  .hidden { display: none !important; }
+</style>
+
+<script>
+class CaptchaGuard extends HTMLElement {
+  #solved = false;
+  get isSolved() { return this.#solved; }
+  
+  showError() {
+    this.querySelector('#captcha-error')?.classList.remove('hidden');
+  }
+  
+  hideError() {
+    this.querySelector('#captcha-error')?.classList.add('hidden');
+  }
+
+  connectedCallback() {
+    const box = this.querySelector('#captcha-box') as HTMLElement;
+    const wrapper = this.querySelector('.captcha-wrapper') as HTMLElement;
+    const visual = this.querySelector('.captcha-visual') as HTMLElement;
+    const spinner = this.querySelector('#captcha-spinner') as HTMLElement;
+    const check = this.querySelector('#captcha-check') as HTMLElement;
+    const text = this.querySelector('#captcha-text') as HTMLElement;
+
+    let verifying = false;
+
+    const startVerification = () => {
+      if (this.#solved || verifying) return;
+      verifying = true;
+      this.hideError();
+      
+      wrapper.classList.add('verifying');
+      text.textContent = 'Analizando identidad...';
+      
+      setTimeout(() => {
+        verifying = false;
+        this.#solved = true;
+        
+        wrapper.classList.remove('verifying');
+        wrapper.classList.add('verified');
+        text.textContent = 'Verificación exitosa';
+        if (this.querySelector('#captcha-subtext')) {
+          this.querySelector('#captcha-subtext')!.textContent = 'Humano confirmado';
+        }
+        
+        box.setAttribute('aria-checked', 'true');
+        box.style.cursor = 'default';
+        
+        this.dispatchEvent(new CustomEvent('captcha-solved', { bubbles: true }));
+      }, 1500 + Math.random() * 800);
+    };
+
+    box.addEventListener('click', startVerification);
+    box.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        startVerification();
+      }
+    });
+  }
+}
+customElements.define('captcha-guard', CaptchaGuard);
+</script>

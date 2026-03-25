@@ -1,0 +1,266 @@
+---
+import LocationAutocomplete from "../forms/LocationAutocomplete.astro";
+import CaptchaGuard from "../forms/CaptchaGuard.astro";
+---
+
+<div id="input-view" class="transition-all duration-500 ease-in-out">
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="text-center mb-sp-16 animate-[fadeUp_0.7s_ease-out_both]">
+    <div
+      class="font-mono text-[0.75rem] font-bold tracking-widest uppercase text-amber-dim mb-sp-4 bg-amber/10 inline-block px-sp-3 py-1 rounded-full"
+    >
+      Análisis Estratégico IA
+    </div>
+    <h1
+      class="font-display text-[clamp(2.8rem,8vw,4.5rem)] font-normal leading-[1.02] text-text-primary mb-sp-6"
+    >
+      Tu idea merece<br />
+      <em class="italic text-amber">un diagnóstico real</em>
+    </h1>
+    <p
+      class="max-w-[560px] mx-auto text-[clamp(1.15rem,2.8vw,1.35rem)] text-text-secondary leading-relaxed"
+    >
+      Completa el cuestionario y nuestra IA generará un análisis FODA,
+      propuesta de valor y plan de acción con presupuesto estimado en
+      segundos.
+    </p>
+  </section>
+
+  <!-- ── Form ──────────────────────────────────────────────────────────────── -->
+  <section
+    class="animate-[fadeUp_0.7s_0.1s_ease-out_both] bg-white/40 border border-white/60 p-sp-8 rounded-3xl backdrop-blur-sm shadow-xl shadow-blue-900/5"
+  >
+    <form id="emprendimiento-form" autocomplete="off" novalidate>
+      <div class="flex flex-col gap-sp-8 mb-sp-10">
+        <!-- Q1: Ubicación con Autocomplete -->
+        <LocationAutocomplete />
+
+        <!-- Q2: Producto / Servicio -->
+        <div class="q-group group/q" data-field="producto">
+          <label
+            class="block text-[1.15rem] font-bold text-text-primary mb-sp-3 leading-tight cursor-pointer transition-transform duration-300 group-focus-within/q:-translate-y-1"
+            for="q-producto"
+          >
+            <span
+              class="font-mono text-[0.8rem] text-amber tracking-wider mr-2 bg-white px-2 py-0.5 rounded border border-border-subtle shadow-sm transition-colors group-focus-within/q:bg-amber group-focus-within/q:text-white"
+              >02</span
+            >
+            ¿Cuál es el producto o servicio que vas a ofrecer?
+            <span class="text-error text-[0.8rem] ml-1">*</span>
+          </label>
+          <textarea
+            id="q-producto"
+            name="producto"
+            class="w-full bg-white border border-border-default rounded-xl px-sp-5 py-sp-4 font-body text-[1.1rem] text-text-primary placeholder:text-text-muted transition-all duration-300 outline-none resize-vertical focus:border-amber focus:ring-4 focus:ring-amber/10 min-h-[100px] shadow-sm hover:border-amber/30"
+            rows="3"
+            placeholder="Ej: Cafetería de especialidad con granos de origen local y repostería artesanal."
+            maxlength="300"
+            required
+            aria-describedby="q-producto-error q-producto-counter"></textarea>
+          <span
+            class="hidden mt-2 block text-[0.85rem] text-error font-semibold animate-[fadeUp_0.2s_ease-out]"
+            id="q-producto-error"
+            role="alert"></span>
+          <span
+            class="block text-right mt-2 font-mono text-[0.7rem] text-text-muted transition-colors [&[data-warn=true]]:text-warning"
+            id="q-producto-counter">0 / 300</span
+          >
+        </div>
+
+        <!-- Q3: Necesidad / Problema -->
+        <div class="q-group group/q" data-field="necesidad">
+          <label
+            class="block text-[1.15rem] font-bold text-text-primary mb-sp-3 leading-tight cursor-pointer transition-transform duration-300 group-focus-within/q:-translate-y-1"
+            for="q-necesidad"
+          >
+            <span
+              class="font-mono text-[0.8rem] text-amber tracking-wider mr-2 bg-white px-2 py-0.5 rounded border border-border-subtle shadow-sm transition-colors group-focus-within/q:bg-amber group-focus-within/q:text-white"
+              >03</span
+            >
+            ¿Qué necesidad va a satisfacer o problema logra resolver?
+            <span class="text-error text-[0.8rem] ml-1">*</span>
+          </label>
+          <textarea
+            id="q-necesidad"
+            name="necesidad"
+            class="w-full bg-white border border-border-default rounded-xl px-sp-5 py-sp-4 font-body text-[1.1rem] text-text-primary placeholder:text-text-muted transition-all duration-300 outline-none resize-vertical focus:border-amber focus:ring-4 focus:ring-amber/10 min-h-[100px] shadow-sm hover:border-amber/30"
+            rows="3"
+            placeholder="Ej: Brindar un espacio tranquilo para trabajar y socializar en un barrio que no tiene cafeterías modernas."
+            maxlength="300"
+            required
+            aria-describedby="q-necesidad-error q-necesidad-counter"></textarea>
+          <span
+            class="hidden mt-2 block text-[0.85rem] text-error font-semibold animate-[fadeUp_0.2s_ease-out]"
+            id="q-necesidad-error"
+            role="alert"></span>
+          <span
+            class="block text-right mt-2 font-mono text-[0.7rem] text-text-muted transition-colors [&[data-warn=true]]:text-warning"
+            id="q-necesidad-counter">0 / 300</span
+          >
+        </div>
+
+        <!-- Q4: Público objetivo -->
+        <div class="q-group group/q" data-field="publico">
+          <label
+            class="block text-[1.15rem] font-bold text-text-primary mb-sp-3 leading-tight cursor-pointer transition-transform duration-300 group-focus-within/q:-translate-y-1"
+            for="q-publico"
+          >
+            <span
+              class="font-mono text-[0.8rem] text-amber tracking-wider mr-2 bg-white px-2 py-0.5 rounded border border-border-subtle shadow-sm transition-colors group-focus-within/q:bg-amber group-focus-within/q:text-white"
+              >04</span
+            >
+            ¿A quién va dirigido?
+            <span class="text-error text-[0.8rem] ml-1">*</span>
+          </label>
+          <input
+            type="text"
+            id="q-publico"
+            name="publico"
+            class="w-full bg-white border border-border-default rounded-xl px-sp-5 py-sp-4 font-body text-[1.1rem] text-text-primary placeholder:text-text-muted transition-all duration-300 outline-none focus:border-amber focus:ring-4 focus:ring-amber/10 shadow-sm hover:border-amber/30"
+            placeholder="Ej: Estudiantes universitarios, trabajadores remotos y vecinos amantes del buen café."
+            maxlength="200"
+            required
+            aria-describedby="q-publico-error"
+          />
+          <span
+            class="hidden mt-2 block text-[0.85rem] text-error font-semibold animate-[fadeUp_0.2s_ease-out]"
+            id="q-publico-error"
+            role="alert"></span>
+        </div>
+
+        <!-- Q5: Medios de pago -->
+        <div class="q-group group/q" data-field="pagos">
+          <label
+            class="block text-[1.15rem] font-bold text-text-primary mb-sp-3 leading-tight cursor-pointer transition-transform duration-300 group-focus-within/q:-translate-y-1"
+            for="q-pagos"
+          >
+            <span
+              class="font-mono text-[0.8rem] text-amber tracking-wider mr-2 bg-white px-2 py-0.5 rounded border border-border-subtle shadow-sm transition-colors group-focus-within/q:bg-amber group-focus-within/q:text-white"
+              >05</span
+            >
+            Medios de facturacion al cliente
+            <span class="text-error text-[0.8rem] ml-1">*</span>
+          </label>
+          <input
+            type="text"
+            id="q-pagos"
+            name="pagos"
+            class="w-full bg-white border border-border-default rounded-xl px-sp-5 py-sp-4 font-body text-[1.1rem] text-text-primary placeholder:text-text-muted transition-all duration-300 outline-none focus:border-amber focus:ring-4 focus:ring-amber/10 shadow-sm hover:border-amber/30"
+            placeholder="Ej: Efectivo, tarjetas de débito/crédito y billeteras digitales (Mercado Pago, Zelle)."
+            maxlength="200"
+            required
+            aria-describedby="q-pagos-error"
+          />
+          <span
+            class="hidden mt-2 block text-[0.85rem] text-error font-semibold animate-[fadeUp_0.2s_ease-out]"
+            id="q-pagos-error"
+            role="alert"></span>
+        </div>
+
+        <!-- Q6: Contexto adicional -->
+        <div class="q-group group/q" data-field="contexto">
+          <label
+            class="block text-[1.15rem] font-bold text-text-primary mb-sp-3 leading-tight cursor-pointer transition-transform duration-300 group-focus-within/q:-translate-y-1"
+            for="q-contexto"
+          >
+            <span
+              class="font-mono text-[0.8rem] text-amber tracking-wider mr-2 bg-white px-2 py-0.5 rounded border border-border-subtle shadow-sm transition-colors group-focus-within/q:bg-amber group-focus-within/q:text-white"
+              >06</span
+            >
+            ¿Hay algo más que debamos saber?
+            <span class="text-[0.75rem] text-text-tertiary font-normal ml-2 italic"
+              >(opcional)</span
+            >
+          </label>
+          <textarea
+            id="q-contexto"
+            name="contexto"
+            class="w-full bg-white border border-border-default rounded-xl px-sp-5 py-sp-4 font-body text-[1.1rem] text-text-primary placeholder:text-text-muted transition-all duration-300 outline-none resize-vertical focus:border-amber focus:ring-4 focus:ring-amber/10 min-h-[120px] shadow-sm hover:border-amber/30"
+            rows="4"
+            placeholder="Ej: Tengo un presupuesto de $5,000, 5 años de experiencia en gastronomía y ya cuento con un local propio."
+            maxlength="1000"
+            aria-describedby="q-contexto-hint q-contexto-counter"></textarea>
+          <span
+            class="block mt-2 text-[0.8rem] text-text-tertiary animate-[fadeUp_0.2s_ease-out]"
+            id="q-contexto-hint"
+          >
+            Indica presupuesto, experiencia previa, limitaciones o canales de
+            venta.
+          </span>
+          <span
+            class="block text-right mt-2 font-mono text-[0.7rem] text-text-muted transition-colors [&[data-warn=true]]:text-warning"
+            id="q-contexto-counter">0 / 1000</span
+          >
+        </div>
+      </div>
+
+      <!-- ── Anti-bot Checkbox ──────────────────────────────────────────── -->
+      <CaptchaGuard />
+
+      <!-- ── Submit ─────────────────────────────────────────────────────── -->
+      <div class="flex flex-col items-center mt-sp-12 gap-sp-6">
+        <button
+          type="submit"
+          class="group relative flex items-center justify-center gap-sp-4 w-full max-w-[440px] px-sp-10 py-sp-6 bg-linear-to-br from-amber to-amber-dim text-white font-body text-[1.15rem] font-extrabold border-none rounded-2xl cursor-pointer transition-all duration-300 hover:shadow-[0_15px_45px_hsl(30,95%,40%,0.35)] hover:-translate-y-1.5 active:translate-y-0 active:shadow-none disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:transform-none overflow-hidden max-[600px]:max-w-full"
+          id="submit-btn"
+          disabled
+        >
+          <span class="btn-text" id="btn-text">Verificando…</span>
+          <span
+            class="hidden flex items-center gap-sp-3 text-[1rem]"
+            id="btn-loader"
+            aria-hidden="true"
+          >
+            <svg class="w-6 h-6 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="3"
+                opacity="0.2"></circle>
+              <path
+                d="M22 12a10 10 0 0 0-10-10"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"></path>
+            </svg>
+            Construyendo tu diagnóstico…
+          </span>
+          <span
+            id="btn-icon"
+            class="text-[1.4rem] transition-transform duration-300 group-hover:translate-x-2"
+            aria-hidden="true">→</span
+          >
+
+          <!-- Shimmer effect -->
+          <div
+            class="absolute inset-0 bg-linear-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:animate-[shimmer_1.2s_infinite] pointer-events-none"
+          >
+          </div>
+        </button>
+
+        <!-- Legal / IA Disclaimer -->
+        <div
+          class="max-w-[600px] text-center px-4 animate-[fadeUp_0.7s_0.2s_ease-out_both]"
+        >
+          <p class="text-[0.8rem] text-text-tertiary leading-relaxed">
+            <span
+              class="inline-flex items-center gap-1.5 font-bold text-text-secondary uppercase tracking-widest text-[0.65rem] mb-1"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-amber animate-pulse"
+              ></span>
+              Generado por Inteligencia Artificial
+            </span>
+            <br />
+            Este análisis es orientativo. En caso de dudas legales o financieras
+            críticas,
+            <span class="text-amber-dim font-bold"
+              >consulte con un asesor profesional calificado.</span
+            >
+          </p>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
