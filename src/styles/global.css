@@ -59,6 +59,28 @@
 
   /* Transitions */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Animations */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(2px); }
+  }
+
+  --animate-fade-up: fade-up 0.5s var(--ease-out) forwards;
+  --animate-shake: shake 0.35s var(--ease-out);
 }
 
 @utility skel {
@@ -154,5 +176,20 @@
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--color-text-tertiary);
+  }
+
+  /* Global utilities used in forms */
+  .hidden { display: none !important; }
+  
+  .q-group[data-state="error"] textarea,
+  .q-group[data-state="error"] input {
+    border-color: var(--color-error) !important;
+    background-color: var(--color-error-bg) !important;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-error), transparent 90%) !important;
+  }
+  .q-group[data-state="valid"] textarea,
+  .q-group[data-state="valid"] input {
+    border-color: var(--color-success) !important;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-success), transparent 90%) !important;
   }
 }
