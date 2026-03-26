@@ -99,6 +99,42 @@ export interface PasosPresupuestoResponse {
 
 // ─── Error ────────────────────────────────────────────────────────────────────
 
+export const GENERIC_ERROR_MESSAGES = {
+  DEFAULT: 'Se ha producido un error al procesar la solicitud. Por favor, inténtalo de nuevo.',
+  VALIDATION: 'Los datos proporcionados no son válidos. Por favor, revisa tus respuestas.',
+  SECURITY: 'Se ha detectado un problema con la solicitud. Por favor, asegúrate de que el contenido sea apropiado.',
+  OFF_TOPIC: 'El contenido proporcionado no parece estar relacionado con un emprendimiento o negocio.',
+  UNAVAILABLE: 'El servicio de análisis no está disponible en este momento. Inténtalo más tarde.',
+};
+
+/** 
+ * Detecta si un mensaje de error contiene términos sensibles de seguridad o técnicos 
+ * y devuelve una versión genérica.
+ */
+export function getGenericMessage(originalMessage: string): string {
+  const normalized = originalMessage.toLowerCase();
+  
+  // Palabras clave de seguridad / prompt injection
+  if (
+    normalized.includes('injection') || 
+    normalized.includes('prompt') || 
+    normalized.includes('security') || 
+    normalized.includes('threat') ||
+    normalized.includes('sanitization') ||
+    normalized.includes('exploit') ||
+    normalized.includes('sql')
+  ) {
+    return GENERIC_ERROR_MESSAGES.SECURITY;
+  }
+
+  // Si el mensaje es muy técnico o vacío, dar el default
+  if (!originalMessage || originalMessage.includes('Error HTTP') || originalMessage.includes('failed to fetch')) {
+    return GENERIC_ERROR_MESSAGES.DEFAULT;
+  }
+
+  return originalMessage;
+}
+
 export interface ApiErrorResponse {
   exito: false;
   error: string;
@@ -112,7 +148,7 @@ export class ApiError extends Error {
     message: string,
     public readonly status: number,
   ) {
-    super(message);
+    super(getGenericMessage(message)); // Aplicamos la máscara aquí también por seguridad
     this.name = 'ApiError';
   }
 }
