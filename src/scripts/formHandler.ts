@@ -307,6 +307,7 @@ export function initFormHandler() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validateAll()) return;
+    if (isCooldownActive()) return;
 
     const getValue = (id: string) =>
       (document.getElementById(`q-${id}`) as HTMLInputElement | HTMLTextAreaElement).value.trim();
@@ -380,24 +381,6 @@ export function initFormHandler() {
   });
 
   backBtn.addEventListener("click", () => {
-    // Check for cooldown in production
-    const isDev = import.meta.env.DEV;
-    const cooldownTime = 3 * 60 * 1000; // 3 minutes
-    const lastAnalysis = localStorage.getItem("last_analysis_timestamp");
-    const now = Date.now();
-
-    if (!isDev && lastAnalysis) {
-      const elapsed = now - parseInt(lastAnalysis, 10);
-      if (elapsed < cooldownTime) {
-        const remainingSeconds = Math.ceil((cooldownTime - elapsed) / 1000);
-        const minutes = Math.floor(remainingSeconds / 60);
-        const seconds = remainingSeconds % 60;
-        alert(
-          `Por favor, espera ${minutes}:${seconds.toString().padStart(2, "0")} minutos antes de realizar un nuevo análisis.`
-        );
-        return;
-      }
-    }
 
     form.reset();
     document.querySelectorAll('.q-group').forEach(group => {
@@ -411,5 +394,66 @@ export function initFormHandler() {
     resultsSection.classList.add('hidden');
     inputView.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateCooldownUI();
   });
+
+  // ── Cooldown UI Logic ──────────────────────────────────────────────────
+  const cooldownContainer = document.getElementById('cooldown-container');
+  const cooldownMessage = document.getElementById('cooldown-message');
+  const COOLDOWN_TIME = 3 * 60 * 1000;
+  let cooldownInterval: number | null = null;
+
+  function isCooldownActive(): boolean {
+    if (import.meta.env.DEV) return false;
+    const lastAnalysis = localStorage.getItem("last_analysis_timestamp");
+    if (!lastAnalysis) return false;
+    const elapsed = Date.now() - parseInt(lastAnalysis, 10);
+    return elapsed < COOLDOWN_TIME;
+  }
+
+  function updateCooldownUI() {
+    if (!cooldownContainer || !cooldownMessage) return;
+    if (import.meta.env.DEV) {
+      cooldownContainer.classList.add('hidden');
+      return;
+    }
+
+    const lastAnalysis = localStorage.getItem("last_analysis_timestamp");
+    if (!lastAnalysis) {
+      cooldownContainer.classList.add('hidden');
+      submitBtn.disabled = !document.getElementById('main-captcha')?.['isSolved'];
+      return;
+    }
+
+    const elapsed = Date.now() - parseInt(lastAnalysis, 10);
+
+    if (elapsed < COOLDOWN_TIME) {
+      const remainingSeconds = Math.ceil((COOLDOWN_TIME - elapsed) / 1000);
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      
+      cooldownContainer.classList.remove('hidden');
+      cooldownMessage.textContent = `Espera ${minutes}:${seconds.toString().padStart(2, "0")} minutos para realizar un nuevo análisis.`;
+      submitBtn.disabled = true;
+
+      if (!cooldownInterval) {
+        cooldownInterval = window.setInterval(updateCooldownUI, 1000);
+      }
+    } else {
+      cooldownContainer.classList.add('hidden');
+      if (cooldownInterval) {
+        clearInterval(cooldownInterval);
+        cooldownInterval = null;
+      }
+      // Re-enable button if captcha is solved
+      const captcha = document.getElementById('main-captcha') as any;
+      if (captcha?.isSolved) {
+        submitBtn.disabled = false;
+        btnText.textContent = 'Analizar mi idea ahora';
+      }
+    }
+  }
+
+  // Initial check
+  updateCooldownUI();
 }

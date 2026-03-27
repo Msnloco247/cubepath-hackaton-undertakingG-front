@@ -30,6 +30,18 @@ import CaptchaGuard from "../forms/CaptchaGuard.astro";
   <section
     class="animate-[fadeUp_0.7s_0.1s_ease-out_both] bg-white/40 border border-white/60 p-sp-8 rounded-3xl backdrop-blur-sm shadow-xl shadow-blue-900/5"
   >
+    <!-- Explicit Guidance Notice -->
+    <div class="mb-sp-8 bg-amber/5 border border-amber/20 p-sp-4 rounded-2xl flex items-start gap-sp-3 shadow-sm animate-[fadeUp_0.5s_0.2s_ease-out_both]">
+      <div class="text-amber mt-1 shrink-0">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <p class="text-[0.95rem] text-text-secondary leading-relaxed font-medium">
+        <span class="text-amber font-bold">Consejo:</span> Cuanto más <span class="italic text-text-primary underline decoration-amber/30 underline-offset-4">específico y detallado</span> seas en tus respuestas, más preciso y útil será el diagnóstico generado por la IA.
+      </p>
+    </div>
+
     <form id="emprendimiento-form" autocomplete="off" novalidate>
       <div class="flex flex-col gap-sp-8 mb-sp-10">
         <!-- Q1: Ubicación con Autocomplete -->
@@ -239,6 +251,14 @@ import CaptchaGuard from "../forms/CaptchaGuard.astro";
           >
           </div>
         </button>
+        
+        <!-- Cooldown Message -->
+        <div id="cooldown-container" class="hidden flex items-center gap-sp-2 text-warning animate-[fadeUp_0.3s_ease-out] bg-warning/5 px-sp-4 py-sp-2 rounded-lg border border-warning/20">
+          <svg class="w-4 h-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span id="cooldown-message" class="text-[0.85rem] font-medium"></span>
+        </div>
 
         <!-- Legal / IA Disclaimer -->
         <div

@@ -114,15 +114,21 @@ export const GENERIC_ERROR_MESSAGES = {
 export function getGenericMessage(originalMessage: string): string {
   const normalized = originalMessage.toLowerCase();
   
-  // Palabras clave de seguridad / prompt injection
+  // Palabras clave de seguridad / prompt injection (English & Spanish)
   if (
     normalized.includes('injection') || 
+    normalized.includes('inyección') || 
     normalized.includes('prompt') || 
     normalized.includes('security') || 
+    normalized.includes('seguridad') || 
     normalized.includes('threat') ||
+    normalized.includes('amenaza') ||
     normalized.includes('sanitization') ||
+    normalized.includes('sanitización') ||
     normalized.includes('exploit') ||
-    normalized.includes('sql')
+    normalized.includes('sql') ||
+    normalized.includes('intento') ||
+    normalized.includes('manipulación')
   ) {
     return GENERIC_ERROR_MESSAGES.SECURITY;
   }

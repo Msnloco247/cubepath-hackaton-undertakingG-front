@@ -7,8 +7,8 @@
   <div class="captcha-wrapper group relative flex items-center justify-between bg-bg-base border border-border-default p-sp-5 rounded-xl max-w-[440px] shadow-sm transition-all duration-300 ease-out hover:border-amber/30 hover:shadow-md [&.verifying]:border-amber-dim [&.verified]:border-success [&.verified]:bg-success/5">
     <div class="flex items-center gap-sp-4 cursor-pointer select-none" id="captcha-box" tabindex="0" role="checkbox" aria-checked="false">
       <div class="captcha-visual w-8 h-8 border-2 border-border-emphasis rounded-lg flex items-center justify-center bg-bg-control transition-all duration-300 ease-out group-hover:scale-105 relative overflow-hidden">
-        <div class="hidden w-5 h-5 border-2 border-transparent border-t-amber rounded-full animate-spin" id="captcha-spinner"></div>
-        <svg class="hidden w-5 h-5 text-white" id="captcha-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" style="stroke-dasharray: 24; stroke-dashoffset: 24;">
+        <div class="hidden w-5 h-5 border-2 border-slate-200/30 border-t-amber rounded-full animate-spin" id="captcha-spinner"></div>
+        <svg class="hidden w-5 h-5 text-white" id="captcha-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" style="stroke-dasharray: 30; stroke-dashoffset: 30;">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
       </div>
@@ -28,6 +28,11 @@
 
 <style is:global>
   @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  
+  .animate-spin {
+    animation: spin 1s linear infinite !important;
+  }
   
   /* Robust state management */
   .captcha-wrapper.verified {
@@ -52,6 +57,7 @@
   
   .captcha-wrapper.verifying .captcha-visual {
     border-color: var(--color-amber) !important;
+    background-color: var(--color-bg-base) !important;
   }
   .captcha-wrapper.verifying #captcha-spinner {
     display: block !important;
