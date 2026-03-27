@@ -10,6 +10,8 @@ import {
   fetchProductoEstrategia,
   fetchPasosPresupuesto,
 } from '../services/apiService';
+import { generateAnalysisPDF } from './pdfGenerator';
+import type { AnalysisData, UserInputs } from '../types/pdfTypes';
 
 // ── Validation Helpers ─────────────────────────────────────────────────────
 
@@ -244,6 +246,9 @@ export function initFormHandler() {
   const resultsSection = document.getElementById('results-section')!;
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const backBtn = document.getElementById('back-to-form')!;
+  const downloadBtn = document.getElementById('download-pdf')!;
+
+  let currentAnalysisData: AnalysisData | null = null;
 
   // Character counters
   function setupCounter(inputId: string, counterId: string, max: number): void {
@@ -374,6 +379,22 @@ export function initFormHandler() {
       showCardError('pasos', pasosResult.reason instanceof ApiError ? pasosResult.reason.message : 'Error de conexión.');
     }
 
+    // Capture data for PDF if everything succeeded
+    if (
+      fodaResult.status === 'fulfilled' && 
+      productoResult.status === 'fulfilled' && 
+      pasosResult.status === 'fulfilled'
+    ) {
+      currentAnalysisData = {
+        inputs: { ubicacion, producto, necesidad, publico, pagos, contexto: contexto || undefined },
+        fodaZona: fodaResult.value,
+        productoEstrategia: productoResult.value,
+        pasosPresupuesto: pasosResult.value,
+        generatedAt: new Date(),
+      };
+      (downloadBtn as HTMLElement).style.display = 'flex';
+    }
+
     submitBtn.disabled = false;
     btnText.classList.remove('hidden');
     btnIcon.classList.remove('hidden');
@@ -393,8 +414,16 @@ export function initFormHandler() {
 
     resultsSection.classList.add('hidden');
     inputView.classList.remove('hidden');
+    (downloadBtn as HTMLElement).style.display = 'none';
+    currentAnalysisData = null;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     updateCooldownUI();
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    if (currentAnalysisData) {
+      generateAnalysisPDF(currentAnalysisData);
+    }
   });
 
   // ── Cooldown UI Logic ──────────────────────────────────────────────────
