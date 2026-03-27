@@ -10,7 +10,16 @@ import type {
 } from '../types/api';
 import { ApiError } from '../types/api';
 
-const BASE_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api/preguntas';
+// Obtener la URL base desde las variables de entorno o usar el fallback local
+let envUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api/preguntas';
+
+// 1. Asegurar que sea una URL absoluta (si no tiene protocolo ni es ruta desde raíz, añadir https://)
+if (!envUrl.startsWith('http') && !envUrl.startsWith('/')) {
+  envUrl = `https://${envUrl}`;
+}
+
+// 2. Normalizar: Quitar barra inclinada final si existe para evitar dobles barras al concatenar
+const BASE_URL = envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
 
 /** Realiza un POST tipado con reintentos y lanza ApiError si fallan todos */
 async function post<T>(endpoint: string, body: PreguntasRequest, retries = 3): Promise<T> {
