@@ -4,7 +4,7 @@
 ---
 
 <section 
-  class="bg-bg-base border border-border-default rounded-xl p-8 min-h-[280px] transition-colors duration-300 ease-out has-[.content-state:not(.hidden)]:border-border-emphasis" 
+  class="card-section bg-bg-base border border-border-default rounded-xl p-8 min-h-[280px] transition-colors duration-300 ease-out has-[.content-state:not(.hidden)]:border-border-emphasis" 
   id="card-foda-zona" 
   aria-live="polite" 
   aria-label="Análisis FODA y Zona"
@@ -33,25 +33,25 @@
 
     <!-- FODA 2×2 matrix -->
     <div class="grid grid-cols-2 gap-sp-3 mb-sp-6 max-[600px]:grid-cols-1">
-      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+      <div data-animate="card-inner" class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
         <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
           <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-success"></span>Fortalezas
         </h3>
         <ul class="list-none flex flex-col gap-sp-4" id="foda-fortalezas"></ul>
       </div>
-      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+      <div data-animate="card-inner" class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
         <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
           <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-[hsl(200,70%,52%)]"></span>Oportunidades
         </h3>
         <ul class="list-none flex flex-col gap-sp-4" id="foda-oportunidades"></ul>
       </div>
-      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+      <div data-animate="card-inner" class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
         <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
           <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-warning"></span>Debilidades
         </h3>
         <ul class="list-none flex flex-col gap-sp-4" id="foda-debilidades"></ul>
       </div>
-      <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
+      <div data-animate="card-inner" class="bg-bg-raised border border-border-subtle rounded-md p-sp-4">
         <h3 class="flex items-center gap-sp-2 font-body text-[0.78rem] font-semibold tracking-wider uppercase text-text-secondary mb-sp-3">
           <span class="w-[7px] h-[7px] rounded-full shrink-0 bg-error"></span>Amenazas
         </h3>
@@ -60,7 +60,7 @@
     </div>
 
     <!-- Zone analysis -->
-    <div class="bg-bg-raised border border-border-subtle rounded-md p-sp-5">
+    <div data-animate="card-inner" class="bg-bg-raised border border-border-subtle rounded-md p-sp-5">
       <h3 class="font-body text-[0.78rem] font-semibold tracking-widest uppercase text-text-tertiary mb-sp-3">Análisis de Zona</h3>
       <p class="text-[0.9rem] text-text-secondary mb-sp-4 leading-relaxed" id="zona-descripcion"></p>
       <div class="grid grid-cols-2 gap-sp-4 mb-sp-4 max-[600px]:grid-cols-1">

@@ -79,6 +79,15 @@
     80% { transform: translateX(2px); }
   }
 
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes hex-glow {
+    0%, 100% { text-shadow: 0 0 4px hsl(30 95% 42% / 0.3); }
+    50% { text-shadow: 0 0 12px hsl(30 95% 42% / 0.6), 0 0 24px hsl(30 95% 42% / 0.2); }
+  }
+
   --animate-fade-up: fade-up 0.5s var(--ease-out) forwards;
   --animate-shake: shake 0.35s var(--ease-out);
 }
@@ -191,5 +200,14 @@
   .q-group[data-state="valid"] input {
     border-color: var(--color-success) !important;
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-success), transparent 90%) !important;
+  }
+
+  .hex-glow {
+    animation: hex-glow 3s ease-in-out infinite;
+  }
+
+  .will-animate {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 }

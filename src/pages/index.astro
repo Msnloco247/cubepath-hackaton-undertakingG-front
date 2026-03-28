@@ -23,9 +23,11 @@ import ResultsView from "../components/dashboard/ResultsView.astro";
 
 <script>
   import { initFormHandler } from "../scripts/formHandler";
+  import { initPageEntrance } from "../scripts/animations";
   
   // Initialize all dashboard logic
   document.addEventListener('DOMContentLoaded', () => {
+    initPageEntrance();
     initFormHandler();
   });
 </script>

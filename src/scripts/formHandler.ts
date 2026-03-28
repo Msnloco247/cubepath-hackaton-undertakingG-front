@@ -12,6 +12,7 @@ import {
 } from '../services/apiService';
 import { generateAnalysisPDF } from './pdfGenerator';
 import type { AnalysisData, UserInputs } from '../types/pdfTypes';
+import { animateToResults, animateCardReveal, animatePDFButton, animateBackToForm } from './animations';
 
 // ── Validation Helpers ─────────────────────────────────────────────────────
 
@@ -107,6 +108,7 @@ function showCardContent(cardId: string): void {
   document.getElementById(`skeleton-${cardId}`)?.classList.add('hidden');
   document.getElementById(`error-${cardId}`)?.classList.add('hidden');
   document.getElementById(`content-${cardId}`)?.classList.remove('hidden');
+  animateCardReveal(cardId);
 }
 
 function setText(id: string, text: string): void {
@@ -345,13 +347,12 @@ export function initFormHandler() {
     // Save timestamp on start of analysis
     localStorage.setItem('last_analysis_timestamp', Date.now().toString());
 
-    // Switch views
-    inputView.classList.add('hidden');
-    resultsSection.classList.remove('hidden');
-    
+    // Animated view switch
     showSkeleton('foda');
     showSkeleton('producto');
     showSkeleton('pasos');
+
+    await animateToResults();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -392,7 +393,8 @@ export function initFormHandler() {
         pasosPresupuesto: pasosResult.value,
         generatedAt: new Date(),
       };
-      (downloadBtn as HTMLElement).style.display = 'flex';
+      (downloadBtn as HTMLElement).style.display = 'none';
+      animatePDFButton();
     }
 
     submitBtn.disabled = false;
@@ -401,7 +403,7 @@ export function initFormHandler() {
     btnLoader.classList.add('hidden');
   });
 
-  backBtn.addEventListener("click", () => {
+  backBtn.addEventListener("click", async () => {
 
     form.reset();
     document.querySelectorAll('.q-group').forEach(group => {
@@ -412,10 +414,11 @@ export function initFormHandler() {
     document.getElementById('q-necesidad-counter')!.textContent = '0 / 300';
     document.getElementById('q-contexto-counter')!.textContent = '0 / 1000';
 
-    resultsSection.classList.add('hidden');
-    inputView.classList.remove('hidden');
     (downloadBtn as HTMLElement).style.display = 'none';
     currentAnalysisData = null;
+
+    await animateBackToForm();
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
     updateCooldownUI();
   });

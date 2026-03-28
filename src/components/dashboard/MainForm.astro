@@ -5,20 +5,23 @@ import CaptchaGuard from "../forms/CaptchaGuard.astro";
 
 <div id="input-view" class="transition-all duration-500 ease-in-out">
   <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
-  <section class="text-center mb-sp-16 animate-[fadeUp_0.7s_ease-out_both]">
+  <section class="text-center mb-sp-16">
     <div
-      class="font-mono text-[0.75rem] font-bold tracking-widest uppercase text-amber-dim mb-sp-4 bg-amber/10 inline-block px-sp-3 py-1 rounded-full"
+      data-animate="hero-badge"
+      class="will-animate font-mono text-[0.75rem] font-bold tracking-widest uppercase text-amber-dim mb-sp-4 bg-amber/10 inline-block px-sp-3 py-1 rounded-full"
     >
       Análisis Estratégico IA
     </div>
     <h1
-      class="font-display text-[clamp(2.8rem,8vw,4.5rem)] font-normal leading-[1.02] text-text-primary mb-sp-6"
+      data-animate="hero-title"
+      class="will-animate font-display text-[clamp(2.8rem,8vw,4.5rem)] font-normal leading-[1.02] text-text-primary mb-sp-6"
     >
       Tu idea merece<br />
       <em class="italic text-amber">un diagnóstico real</em>
     </h1>
     <p
-      class="max-w-[560px] mx-auto text-[clamp(1.15rem,2.8vw,1.35rem)] text-text-secondary leading-relaxed"
+      data-animate="hero-subtitle"
+      class="will-animate max-w-[560px] mx-auto text-[clamp(1.15rem,2.8vw,1.35rem)] text-text-secondary leading-relaxed"
     >
       Completa el cuestionario y nuestra IA generará un análisis FODA, propuesta
       de valor y plan de acción con presupuesto estimado en segundos.
@@ -27,11 +30,13 @@ import CaptchaGuard from "../forms/CaptchaGuard.astro";
 
   <!-- ── Form ──────────────────────────────────────────────────────────────── -->
   <section
-    class="animate-[fadeUp_0.7s_0.1s_ease-out_both] bg-white/40 border border-white/60 p-sp-8 rounded-3xl backdrop-blur-sm shadow-xl shadow-blue-900/5"
+    data-animate="form-card"
+    class="will-animate bg-white/40 border border-white/60 p-sp-8 rounded-3xl backdrop-blur-sm shadow-xl shadow-blue-900/5"
   >
     <!-- Explicit Guidance Notice -->
     <div
-      class="mb-sp-8 bg-amber/5 border border-amber/20 p-sp-4 rounded-2xl flex items-start gap-sp-3 shadow-sm animate-[fadeUp_0.5s_0.2s_ease-out_both]"
+      data-animate="form-notice"
+      class="mb-sp-8 bg-amber/5 border border-amber/20 p-sp-4 rounded-2xl flex items-start gap-sp-3 shadow-sm"
     >
       <div class="text-amber mt-1 shrink-0">
         <svg
@@ -226,7 +231,7 @@ import CaptchaGuard from "../forms/CaptchaGuard.astro";
       <CaptchaGuard />
 
       <!-- ── Submit ─────────────────────────────────────────────────────── -->
-      <div class="flex flex-col items-center mt-sp-12 gap-sp-6">
+      <div data-animate="form-footer" class="flex flex-col items-center mt-sp-12 gap-sp-6">
         <button
           type="submit"
           class="group relative flex items-center justify-center gap-sp-4 w-full max-w-[440px] px-sp-10 py-sp-6 bg-linear-to-br from-amber to-amber-dim text-white font-body text-[1.15rem] font-extrabold border-none rounded-2xl cursor-pointer transition-all duration-300 hover:shadow-[0_15px_45px_hsl(30,95%,40%,0.35)] hover:-translate-y-1.5 active:translate-y-0 active:shadow-none disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:transform-none overflow-hidden max-[600px]:max-w-full"
@@ -290,7 +295,7 @@ import CaptchaGuard from "../forms/CaptchaGuard.astro";
 
         <!-- Legal / IA Disclaimer -->
         <div
-          class="max-w-[600px] text-center px-4 animate-[fadeUp_0.7s_0.2s_ease-out_both]"
+          class="max-w-[600px] text-center px-4"
         >
           <p class="text-[0.8rem] text-text-tertiary leading-relaxed">
             <span
