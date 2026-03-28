@@ -24,6 +24,15 @@ const {
       rel="stylesheet"
     />
     <title>{title}</title>
+
+    <!-- Google Analytics (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7QZ0TLMLBW"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7QZ0TLMLBW');
+    </script>
   </head>
   <body class="selection:bg-amber/30 selection:text-amber">
     <slot />

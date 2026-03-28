@@ -13,6 +13,7 @@ import {
 import { generateAnalysisPDF } from './pdfGenerator';
 import type { AnalysisData, UserInputs } from '../types/pdfTypes';
 import { animateToResults, animateCardReveal, animatePDFButton, animateBackToForm } from './animations';
+import { trackFormSubmit, trackCardLoaded, trackAnalysisComplete, trackPDFDownload, trackNewAnalysis } from './analytics';
 
 // ── Validation Helpers ─────────────────────────────────────────────────────
 
@@ -347,6 +348,9 @@ export function initFormHandler() {
     // Save timestamp on start of analysis
     localStorage.setItem('last_analysis_timestamp', Date.now().toString());
 
+    // Track form submission
+    trackFormSubmit(ubicacion);
+
     // Animated view switch
     showSkeleton('foda');
     showSkeleton('producto');
@@ -364,20 +368,26 @@ export function initFormHandler() {
 
     if (fodaResult.status === 'fulfilled') {
       renderFodaZona(fodaResult.value);
+      trackCardLoaded('foda', true);
     } else {
       showCardError('foda', fodaResult.reason instanceof ApiError ? fodaResult.reason.message : 'Error de conexión.');
+      trackCardLoaded('foda', false);
     }
 
     if (productoResult.status === 'fulfilled') {
       renderProductoEstrategia(productoResult.value);
+      trackCardLoaded('producto', true);
     } else {
       showCardError('producto', productoResult.reason instanceof ApiError ? productoResult.reason.message : 'Error de conexión.');
+      trackCardLoaded('producto', false);
     }
 
     if (pasosResult.status === 'fulfilled') {
       renderPasosPresupuesto(pasosResult.value);
+      trackCardLoaded('pasos', true);
     } else {
       showCardError('pasos', pasosResult.reason instanceof ApiError ? pasosResult.reason.message : 'Error de conexión.');
+      trackCardLoaded('pasos', false);
     }
 
     // Capture data for PDF if everything succeeded
@@ -395,6 +405,7 @@ export function initFormHandler() {
       };
       (downloadBtn as HTMLElement).style.display = 'none';
       animatePDFButton();
+      trackAnalysisComplete();
     }
 
     submitBtn.disabled = false;
@@ -421,11 +432,13 @@ export function initFormHandler() {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     updateCooldownUI();
+    trackNewAnalysis();
   });
 
   downloadBtn.addEventListener('click', () => {
     if (currentAnalysisData) {
       generateAnalysisPDF(currentAnalysisData);
+      trackPDFDownload();
     }
   });
 

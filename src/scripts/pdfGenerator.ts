@@ -79,7 +79,7 @@ export function generateAnalysisPDF(data: AnalysisData) {
     body: metadata,
     theme: 'plain',
     bodyStyles: { fontSize: 9 },
-    columnStyles: { 0: { fontStyle: 'bold', width: 40 } },
+    columnStyles: { 0: { fontStyle: 'bold', cellWidth: 40 } },
     margin: { left: 20 },
   });
   
@@ -94,16 +94,16 @@ export function generateAnalysisPDF(data: AnalysisData) {
   const foda = data.fodaZona.analisis.analisisFODA;
   const fodaData = [
     [
-      { content: 'FORTALEZAS', styles: { textColor: COLORS.SUCCESS, fontStyle: 'bold' } },
-      { content: 'OPORTUNIDADES', styles: { textColor: [0, 100, 255], fontStyle: 'bold' } }
+      { content: 'FORTALEZAS', styles: { textColor: COLORS.SUCCESS as any, fontStyle: 'bold' } },
+      { content: 'OPORTUNIDADES', styles: { textColor: [0, 100, 255] as any, fontStyle: 'bold' } }
     ],
     [
       foda.fortalezas.map(f => `• ${f.keyword}: ${f.descripcion}`).join('\n'),
       foda.oportunidades.map(f => `• ${f.keyword}: ${f.descripcion}`).join('\n')
     ],
     [
-      { content: 'DEBILIDADES', styles: { textColor: COLORS.AMBER, fontStyle: 'bold' } },
-      { content: 'AMENAZAS', styles: { textColor: COLORS.ERROR, fontStyle: 'bold' } }
+      { content: 'DEBILIDADES', styles: { textColor: COLORS.AMBER as any, fontStyle: 'bold' } },
+      { content: 'AMENAZAS', styles: { textColor: COLORS.ERROR as any, fontStyle: 'bold' } }
     ],
     [
       foda.debilidades.map(f => `• ${f.keyword}: ${f.descripcion}`).join('\n'),
@@ -113,7 +113,7 @@ export function generateAnalysisPDF(data: AnalysisData) {
 
   autoTable(doc, {
     startY: currentY + 5,
-    body: fodaData,
+    body: fodaData as any,
     theme: 'grid',
     styles: { fontSize: 8, cellPadding: 5, overflow: 'linebreak' },
     margin: { left: 20, right: 20 },

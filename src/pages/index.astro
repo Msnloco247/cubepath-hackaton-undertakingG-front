@@ -24,11 +24,17 @@ import ResultsView from "../components/dashboard/ResultsView.astro";
 <script>
   import { initFormHandler } from "../scripts/formHandler";
   import { initPageEntrance } from "../scripts/animations";
+  import { trackCaptchaSolved } from "../scripts/analytics";
   
   // Initialize all dashboard logic
   document.addEventListener('DOMContentLoaded', () => {
     initPageEntrance();
     initFormHandler();
+
+    // Track captcha success
+    document.addEventListener('captcha-solved', () => {
+      trackCaptchaSolved();
+    });
   });
 </script>
 
